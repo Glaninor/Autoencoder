@@ -20,12 +20,11 @@ test <- test[,-which(names(test)=="mcq240i")]
 test <- test[,-which(names(test)=="mcq240d")]
 test <- test[,-which(names(test)=="mcq230d")]
 
-auto.train.x <- as.matrix(train[,3:1278])
-auto.train.y <- as.matrix(trian[,2])
-auto.test.x <- as.matrix(test[1:100,3:1278])
-auto.test.y <- as.matrix(trian[1:100,2])
+auto.train <- as.matrix(train[1:100,2:1278])
+auto.test.x<- as.matrix(test[1:100,3:1278])
+auto.test.y <- as.matrix(test[1:100,2])
 
-input_layer <- layer_input(shape = c(1276))
+input_layer <- layer_input(shape = c(1277))
 
 encoder <- 
   input_layer %>% 
@@ -44,7 +43,7 @@ decoder <-
   layer_dense(units = 300, activation = "relu") %>%
   layer_dropout(rate = 0.2) %>%
   layer_dense(units = 500, activation = "relu") %>%
-  layer_dense(units = 1276)
+  layer_dense(units = 1277)
 
 autoencoder.model <- keras_model(inputs = input_layer, outputs = decoder)
 
@@ -58,11 +57,11 @@ summary(autoencoder.model)
 
 history <-
   autoencoder.model %>%
-  keras::fit(auto.train.x,
-             auto.train.x,
+  keras::fit(auto.train,
+             auto.train,
              epochs=20,
              shuffle=TRUE,
-             validation_data= list(auto.test.x,auto.test.x)
+             validation_data= list(auto.test,auto.test)
   )
 
 layer_name <- 'dense_28'
