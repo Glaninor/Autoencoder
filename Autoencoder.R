@@ -70,4 +70,4 @@ intermediate_layer_model <- keras_model(inputs = autoencoder.model$input,
                                         outputs = get_layer(autoencoder.model,layer_name)$output)
 intermediate_output <- predict(intermediate_layer_model,auto.test.x)
 
-cor.auto <- cor(auto.test.x,method = "spearman")
+cor.auto <- cor(intermediate_output,method = "spearman")
